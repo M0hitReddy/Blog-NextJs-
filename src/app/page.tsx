@@ -13,7 +13,7 @@ import User from "./user";
 // import Navbar from "./navbar";
 import LandingPage from "./components/LandingPage";
 import axios from "axios";
-import next from "next";
+// import next from "next";
 
 // export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
@@ -29,11 +29,11 @@ export const revalidate = 3600;
 export default async function Home() {
   const session = await getServerSession(options);
   const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
-  const data: Array<any> = res.data;
+  const data = res.data;
   // if (!session) {
   //   redirect("/login");
   // }
-  const user = session?.user;
+  // const user = session?.user;
   return (
     <>
       {/* <Navbar /> */}

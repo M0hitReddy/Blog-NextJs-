@@ -11,16 +11,17 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getSession, signIn } from "next-auth/react";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+// import { getSession, signIn } from "next-auth/react";
+// import { useEffect } from "react";
+// import { useRouter } from "next/navigation";
 // import { useRouter } from "next/router";
 
-const description =
-  "A login form with email and password. There's an option to login with Google and a link to sign up if you don't have an account.";
+// const description =
+//   "A login form with email and password. There's an option to login with Google and a link to sign up if you don't have an account.";
 
 export default function LoginForm() {
-  const router = useRouter();
+  // const router = useRouter();
 
   // useEffect(() => {
   //   async function checkSession() {

@@ -12,8 +12,8 @@ export const options: NextAuthOptions = {
   // },
   callbacks: {
     async jwt({ token, user }) {
-      console.log("user", user);
-      console.log("token", token);
+      // console.log("user", user);
+      // console.log("token", token);
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -22,7 +22,7 @@ export const options: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log("session", token);
+      // console.log("session", token);
       if (session.user) {
         session.user.id = token.id;
         session.user.name = token.name;
@@ -30,7 +30,7 @@ export const options: NextAuthOptions = {
       }
       return session;
     },
-    async signIn({ user, account, email, credentials }) {
+    async signIn({ user }) {
       console.log("signIn", user);
       // console.log(user);
       // console.log(account);

@@ -3,12 +3,12 @@ import { Input } from "@/components/ui/input";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-interface FeaturedPostProps {
-  title: string;
-  description: string;
-  author: string;
-  date: string;
-}
+// interface FeaturedPostProps {
+//   title: string;
+//   description: string;
+//   author: string;
+//   date: string;
+// }
 // const FeaturedPost = ({
 //   title,
 //   description,
