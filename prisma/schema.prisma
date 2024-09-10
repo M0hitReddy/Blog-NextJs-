@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String?
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  posts     Post[]
+  comments  Comment[]
+  likes     Like[]
+  bookmarks Bookmark[]
+}
+
+model Post {
+  id        String     @id @default(cuid())
+  title     String
+  content   String?
+  published Boolean    @default(false)
+  author    User       @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  comments  Comment[]
+  bookmarks Bookmark[]
+  likes     Like[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+}
