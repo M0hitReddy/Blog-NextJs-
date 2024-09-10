@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import HeaderLogo from "@/static/HeaderLogo";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,21 +30,41 @@ import Link from "next/link";
 export default function LandingPage() {
   return (
     // <div className="min-h-screen bg-white">
-    <main className=" mx-aut py-12">
-      <header className="text-center mb-16 py-[160px]">
-        <h1 className="text-7xl font-bold mb-4">Stay curious.</h1>
-        <p className="text-xl text-gray-600 mb-8">
-          Discover stories, thinking, and expertise from writers on any topic.
-        </p>
+    <main className=" mx-aut pb-12">
+      {/* <header className="text-center mb-16 py-24 sm:py-32 md:py-40 lg:py-44">
+        <div className="container">
+          <h1 className="text-8xl font-bold font-sans mb-4">Stay curious.</h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Discover stories, thinking, and expertise from writers on any topic.
+          </p>
 
-        <Link href="/login">
-          <Button
-            variant="default"
-            className="rounded-full text-lg px-8 py-7 bg-primary text-primary-foreground"
-          >
-            Start reading
-          </Button>
-        </Link>
+          <Link href="/login">
+            <Button
+              variant="default"
+              className="rounded-full text-lg px-8 py-7 bg-primary text-primary-foreground"
+            >
+              Start reading
+            </Button>
+          </Link>
+        </div>
+      </header> */}
+      <header className="flex-grow flex items-center py-24 sm:py-32 md:py-40 lg:py-48 mx-auto ">
+        <div className="container w-full mx-auto px-4 flex flex-col md:flex-row items-center justify-between relative">
+          <div className="w-full md:w1/2 pr-0 md:pr-8 mb-8 md:mb-0 mx-auto">
+            <h1 className="text-7xl md:text-8xl font-[600] font-sans mb-4">
+              Human stories & ideas
+            </h1>
+            <p className="text-xl text-gray-600 mb-8">
+            Discover stories, thinking, and expertise from writers on any topic.
+            </p>
+            <Button className="bg-black  text-primary-foreground rounded-full px-6 py-3 h-max text-lg font-normal ">
+              Start reading
+            </Button>
+          </div>
+          <div className="md:w-96 xl:opacity-100 opacity-40 w-max absolute md:flex right-0 top-1/2 -z-10 md:w1/2 flex justify-center items-center -translate-y-1/2">
+            <HeaderLogo className="w-full max-w-md h-auto" />
+          </div>
+        </div>
       </header>
 
       <section className="w-full py-16 bg-muted">
