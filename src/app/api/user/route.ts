@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+// import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 const users = [
@@ -16,7 +16,11 @@ export async function POST(req: NextRequest) {
 
   if (user && user.id && user.name && user.email) {
     users.push(user);
-    return NextResponse.json({success: true, message: "Inserted successfully", user});
+    return NextResponse.json({
+      success: true,
+      message: "Inserted successfully",
+      user,
+    });
   } else {
     return NextResponse.json({ error: "Invalid user data" }, { status: 400 });
   }
