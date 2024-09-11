@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import HeaderLogo from "@/static/HeaderLogo";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,8 +47,8 @@ export default function LandingPage() {
           </Link>
         </div>
       </header> */}
-      <header className="flex-grow flex items-center py-24 sm:py-32 md:py-40 lg:py-48 mx-auto ">
-        <div className="container w-full mx-auto px-4 flex flex-col md:flex-row items-center justify-between relative">
+      <header className="flex-grow flex items-center py-24 sm:py-32 md:py-40 lg:py-48 mx-auto relative">
+        <div className="container w-full mx-auto px-4 flex flex-col md:flex-row items-center justify-between ">
           <div className="w-full md:w1/2 pr-0 md:pr-8 mb-8 md:mb-0 mx-auto">
             <h1 className="text-7xl md:text-8xl font-[600] font-sans mb-4">
               Human stories & ideas
@@ -62,7 +61,14 @@ export default function LandingPage() {
             </Button>
           </div>
           <div className="md:w-96 xl:opacity-100 opacity-40 w-max absolute md:flex right-0 top-1/2 -z-10 md:w1/2 flex justify-center items-center -translate-y-1/2">
-            <HeaderLogo className="w-full max-w-md h-auto" />
+            {/* <HeaderLogo className="w-full max-w-md h-auto" /> */}
+            <Image
+              alt="Header logo"
+              className="w-full max-w-md h-auto"
+              height="200"
+              src="https://miro.medium.com/v2/format:png/4*SdjkdS98aKH76I8eD0_qjw.png"
+              width="200"
+            />
           </div>
         </div>
       </header>

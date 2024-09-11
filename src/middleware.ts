@@ -13,6 +13,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url)); // Redirect to home if logged in
   }
 
+  if (token && pathname === "/signup") {
+    return NextResponse.redirect(new URL("/", req.url)); // Redirect to home if logged in
+  }
+
   // If user is not logged in and tries to access a protected route (e.g., '/')
   if (!token && pathname === "/") {
     // return NextResponse.json({ message: "Not authenticated" }); // Return a message if not authenticated
@@ -28,5 +32,5 @@ export async function middleware(req: NextRequest) {
 
 // Apply middleware to the necessary routes
 export const config = {
-  matcher: ["/", "/login", "/api"], // Apply middleware to both "/" and "/login"
+  matcher: ["/", "/login","/signup", "/api"], // Apply middleware to both "/" and "/login"
 };

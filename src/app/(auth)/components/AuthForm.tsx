@@ -20,7 +20,7 @@ import { signIn } from "next-auth/react";
 // const description =
 //   "A login form with email and password. There's an option to login with Google and a link to sign up if you don't have an account.";
 
-export default function LoginForm() {
+export default function AuthForm({ type }: { type: "signup" | "login" }) {
   // const router = useRouter();
 
   // useEffect(() => {
@@ -35,11 +35,14 @@ export default function LoginForm() {
   // }, [router]);
 
   return (
-    <Card className="mx-auto max-w-sm mt-20 ">
+    <Card className="mx-auto max-w-sm w-svw mt-20 ">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardTitle className="text-2xl">
+          {type === "login" ? "Login" : "Register"}
+        </CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your email and password below{" "}
+          {type === "login" && "to login to your account"}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -67,16 +70,26 @@ export default function LoginForm() {
             className="w-full"
             onClick={() => signIn("credentials", { callbackUrl: "/" })}
           >
-            Login
+            {type === "login" ? "Login" : "Sign Up"}
           </Button>
-          <Button variant="outline" className="w-full" onClick={() => signIn()}>
-            Login with Google
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => signIn("google")}
+          >
+            {type === "signup" ? "Sign Up" : "Login"} with Google
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link href="#" className="underline">
-            Sign up
+          {type === "login"
+            ? "Don't have an account? "
+            : "Already have an account? "}
+
+          <Link
+            href={type === "login" ? "/signup" : "/login"}
+            className="underline"
+          >
+            {type === "login" ? "Sign Up" : "Login"}
           </Link>
         </div>
       </CardContent>

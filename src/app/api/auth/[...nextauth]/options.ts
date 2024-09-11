@@ -1,6 +1,9 @@
 // import { type NextAuthOptions } from "next-auth";
+import prisma from "@/lib/dbConnect";
 import { NextAuthOptions } from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+// import { getProviders } from "next-auth/react";
 // import prisma from "@/lib/dbConnect";
 export const options: NextAuthOptions = {
   // pages: {
@@ -12,25 +15,44 @@ export const options: NextAuthOptions = {
   // },
   callbacks: {
     async jwt({ token, user }) {
-      // console.log("user", user);
+      console.log("user", user);
       // console.log("token", token);
+      // console.log("session", session);
       if (user) {
         token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
+        //   token.name = user.name;
+        //   token.email = user.email;
       }
       return token;
     },
     async session({ session, token }) {
+      // console.log("user", user);
       // console.log("session", token);
       if (session.user) {
         session.user.id = token.id;
-        session.user.name = token.name;
-        session.user.email = token.email;
+
+        // session.user.name = token.name;
+        // session.user.email = token.email;
       }
       return session;
     },
-    async signIn({ user }) {
+    async signIn({ user, account, profile }) {
+      if (account?.provider === "google") {
+        const existingUser = await prisma.user.findFirst({
+          where: {
+            email: profile?.email ?? "",
+          },
+        });
+        if (!existingUser) {
+          await prisma.user.create({
+            data: {
+              email: profile?.email ?? "",
+              name: profile?.name,
+              password: user.id, // Add a placeholder value for the password property
+            },
+          });
+        }
+      }
       console.log("signIn", user);
       // console.log(user);
       // console.log(account);
@@ -46,6 +68,10 @@ export const options: NextAuthOptions = {
     strategy: "jwt",
   },
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
     CredentialProvider({
       id: "credentials",
       name: "Credentials",
