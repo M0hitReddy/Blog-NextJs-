@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "seed": "node prisma/seed.js"
+    
   },
   "prisma": {
     "seed": "ts-node prisma/seed.js"
