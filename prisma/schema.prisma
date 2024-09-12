@@ -34,7 +34,9 @@ model Post {
   comments   Comment[]
   bookmarks  Bookmark[]
   likes      Like[]
-  categories Category[]
+  // categories Category[]
+  categories CategoryToPost[]
+
 }
 
 model Comment {
@@ -69,7 +71,8 @@ model Bookmark {
 model Category {
   id         String      @id @default(cuid())
   name       String
-  posts      Post[]
+  // posts      Post[]
+  posts    CategoryToPost[]
 }
 
 model Follower {
@@ -79,4 +82,15 @@ model Follower {
   follower   User        @relation("Followers", fields: [followerId], references: [id])
   followerId String
   createdAt  DateTime    @default(now())
+}
+
+
+model CategoryToPost {
+  postId     String
+  categoryId String
+  post       Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  // Define composite primary key
+  @@id([postId, categoryId])
 }
