@@ -1,11 +1,13 @@
 // import { type NextAuthOptions } from "next-auth";
 import prisma from "@/lib/dbConnect";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 // import { getProviders } from "next-auth/react";
 // import prisma from "@/lib/dbConnect";
 export const options: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   // pages: {
   // signIn: "/login",
   // signOut: "/auth/signout",
