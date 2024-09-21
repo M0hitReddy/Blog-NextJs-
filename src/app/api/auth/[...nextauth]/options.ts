@@ -7,7 +7,7 @@ import GoogleProvider from "next-auth/providers/google";
 // import { getProviders } from "next-auth/react";
 // import prisma from "@/lib/dbConnect";
 export const options: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma),
   // pages: {
   // signIn: "/login",
   // signOut: "/auth/signout",
@@ -17,7 +17,7 @@ export const options: NextAuthOptions = {
   // },
   callbacks: {
     async jwt({ token, user }) {
-      console.log("user", user);
+      // console.log("user", user);
       // console.log("token", token);
       // console.log("session", session);
       if (user) {
@@ -55,7 +55,7 @@ export const options: NextAuthOptions = {
           });
         }
       }
-      console.log("signIn", user);
+      // console.log("signIn", user);
       // console.log(user);
       // console.log(account);
       // console.log(credentials);

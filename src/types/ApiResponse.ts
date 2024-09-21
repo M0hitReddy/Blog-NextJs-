@@ -34,6 +34,7 @@ export interface ApiResponse<T> {
     success: boolean;
     message: string;
     data: T;
+    url?: string; // Add the optional url property
     error: string | null;
     // loading: boolean;
 

@@ -6,16 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { ApiResponse } from "@/types/ApiResponse";
 import Image from "next/image";
+import BlogItem from "@/components/BlogItem";
+import { Separator } from "@/components/ui/separator";
+import CategoryCarousel from "./components/CtegoriesCarousel";
 
 export const revalidate = 3600;
-
-interface Post {
-  title: string;
-  // image: string;
-  author: string;
-  // readTime: string;
-  content: string;
-}
 
 function readTime(content: string): string {
   const wordsPerMinute = 200;
@@ -54,52 +49,50 @@ export default async function Home() {
         <LandingPage />
       ) : (
         // https://picsum.photos/300/180?random=${i}
-        <main className="container mx-auto px-4 py-12">
-          <div className="max-w-3xl mx-auto">
-            <FeaturedPost post={posts[0]} />
-            <section>
-              <h2 className="text-3xl font-bold mb-8">Latest Posts</h2>
-              <div className="space-y-12">
+        <main className="container md:grid md:grid-cols-3 md:gap-4 mx-auto px-0 sm:px-4 relative">
+          <section className="col-span-2 w-full max-w-3xl mx-auto px-1 sm:px-4 py-8 relative">
+            <CategoryCarousel className="md:w-full max-w-scr bg-white rounded-none sticky top-0 z-10 mb-12 px-4" />
+            <div className="space-y-6 mt-4">
+              <div className="space-y-6 w-auto">
                 {posts.map((post, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col md:flex-row md:items-center gap-6"
-                  >
-                    <Image
-                      src={`https://picsum.photos/300/180?random=${index}`}
-                      alt={post.title}
-                      height={180}
-                      width={300}
-                      className="w-full md:w-1/3 aspect-video object-cover rounded-lg"
-                    />
-                    <div className="flex-grow">
-                      <h3 className="text-xl font-bold mb-2 hover:underline">
-                        <Link href={`/post/${index + 1}`}>{post.title}</Link>
-                      </h3>
-                      <p className="text-muted-foreground mb-4">
-                        {post.content.split(" ").slice(0, 20).join(" ")}...
-                      </p>
-                      <div className="flex items-center space-x-2">
-                        <Avatar className="w-6 h-6">
-                          <AvatarImage
-                            src="/placeholder-avatar.jpg"
-                            alt={post.author}
-                          />
-                          <AvatarFallback>{post.author}</AvatarFallback>
-                        </Avatar>
-                        <span className="text-sm font-medium">
-                          {post.author}
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          · {readTime(post.content)} read
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  <BlogItem key={index} post={post} />
                 ))}
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
+          <Separator
+            orientation="vertical"
+            className="absolute left-2/3 hidden md:block"
+          />
+          <section className="col-span-1 px-6 sticky top-0 h-screen py-10 max-w-sm hidden md:block">
+            <h4 className="text-lg font-medium mb-4">Trending Posts</h4>
+            <div className="gap-12 space-y-2 m">
+              {posts.slice(0, 4).map((post, index) => (
+                <div className="border-b py-3">
+                  <h3 className="text-lg font-bold mb-2">
+                    <Link href={`/post/${post.id}`}>{post.title}</Link>
+                  </h3>
+                  <div className="flex gap-2">
+                    <Avatar className="w-6 h-6">
+                      <AvatarImage
+                        src={`https://picsum.photos/300/180?random=${Math.floor(
+                          Math.random() * 100
+                        )}`}
+                        alt={post.author.name}
+                      />
+                      <AvatarFallback>{post.author.name}</AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium">
+                      {post.author.name}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      · {readTime(post.content ?? "")} read
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         </main>
       )}
     </>
@@ -122,16 +115,16 @@ function FeaturedPost({ post }: { post: Post }) {
           <Link href="/post/featured">{post.title}</Link>
         </h3>
         <p className="text-muted-foreground mb-4">
-          {post.content.split(" ").slice(0, 20).join(" ")}...
+          {post.content?.split(" ").slice(0, 20).join(" ")}...
         </p>
         <div className="flex items-center space-x-2">
           <Avatar className="w-6 h-6">
             <AvatarImage src="/placeholder-avatar.jpg" alt="Author" />
             <AvatarFallback>A</AvatarFallback>
           </Avatar>
-          <span className="text-sm font-medium">{post.author}</span>
+          <span className="text-sm font-medium">{post.author.name}</span>
           <span className="text-sm text-muted-foreground">
-            · {readTime(post.content)} read
+            · {readTime(post.content ?? "")} read
           </span>
         </div>
       </div>

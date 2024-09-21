@@ -18,9 +18,9 @@ export async function middleware(req: NextRequest) {
   }
 
   // If user is not logged in and tries to access a protected route (e.g., '/')
-  if (!token && pathname === "/") {
+  if (!token && pathname === "/new") {
     // return NextResponse.json({ message: "Not authenticated" }); // Return a message if not authenticated
-    // return NextResponse.redirect(new URL("/login", req.url)); // Redirect to login if not authenticated
+    return NextResponse.redirect(new URL("/", req.url)); // Redirect to login if not authenticated
   }
 
   // Continue with the request if no conditions match
@@ -32,5 +32,5 @@ export async function middleware(req: NextRequest) {
 
 // Apply middleware to the necessary routes
 export const config = {
-  matcher: ["/", "/login","/signup", "/api"], // Apply middleware to both "/" and "/login"
+  matcher: ["/", "/login","/signup", "/api", "/new"], // Apply middleware to both "/" and "/login"
 };

@@ -1,7 +1,11 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Fotter() {
-  return (
+  const path = usePathname();
+
+  return path !== "new" ? null : (
     <footer className="mt-auto py-6 w-full shrink-0 absolut bottom-0 border-t">
       <div className=" px-4 md:px-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
