@@ -25,7 +25,7 @@ export default function Page() {
 
       // Send the file to the server-side upload API
       const response = await axios.post<ApiResponse<string>>(
-        "http://localhost:3000/api/upload",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`,
         JSON.stringify({ file: base64String })
       );
 

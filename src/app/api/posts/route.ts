@@ -1,6 +1,9 @@
 // import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/dbConnect";
-import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { NextRequest, NextResponse } from "next/server";
+import { options } from "../auth/[...nextauth]/options";
 
 export async function GET() {
   try {
@@ -20,3 +23,32 @@ export async function GET() {
     );
   }
 }
+
+// export async function POST(req: NextRequest) {
+//   const body = await req.json();
+  
+//   const { title, content, status } = body;
+//   const session = await getServerSession(options);
+//   console.log(body, session);
+//   try {
+//     const post = await prisma.post.create({
+//       data: {
+//         title,
+//         content: JSON.stringify(content),
+//         status,
+//         authorId: String(session?.user.id) ?? "",
+//       },
+//     });
+//     return NextResponse.json({
+//       success: true,
+//       message: "Post created successfully",
+//       data: post.id,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return NextResponse.json(
+//       { success: false, message: "failed to create post" },
+//       { status: 500 }
+//     );
+//   }
+// }

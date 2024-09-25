@@ -7,60 +7,50 @@ import GoogleProvider from "next-auth/providers/google";
 // import { getProviders } from "next-auth/react";
 // import prisma from "@/lib/dbConnect";
 export const options: NextAuthOptions = {
-  // adapter: PrismaAdapter(prisma),
-  // pages: {
-  // signIn: "/login",
-  // signOut: "/auth/signout",
-  // error: "/auth/error",
-  // verifyRequest: "/auth/verify-request",
-  // newUser: "/auth/new-user",
-  // },
   callbacks: {
-    async jwt({ token, user }) {
-      // console.log("user", user);
-      // console.log("token", token);
-      // console.log("session", session);
+    async jwt({ token, user, account }) {
+      // console.log(token, "JWT");
       if (user) {
+        // User object is only passed on initial sign in
         token.id = user.id;
-        //   token.name = user.name;
-        //   token.email = user.email;
+        token.name = user.name;
+        token.email = user.email;
       }
       return token;
     },
     async session({ session, token }) {
-      // console.log("user", user);
-      // console.log("session", token);
       if (session.user) {
         session.user.id = token.id;
-
-        // session.user.name = token.name;
-        // session.user.email = token.email;
+        session.user.name = token.name;
+        session.user.email = token.email;
       }
+      // console.log(session, token, "SESSION");
       return session;
     },
     async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
-        const existingUser = await prisma.user.findFirst({
+        const existingUser = await prisma.user.findUnique({
           where: {
             email: profile?.email ?? "",
           },
         });
         if (!existingUser) {
-          await prisma.user.create({
+          const newUser = await prisma.user.create({
             data: {
               email: profile?.email ?? "",
-              name: profile?.name,
-              password: user.id, // Add a placeholder value for the password property
+              name: profile?.name ?? "",
+              password: "", // Consider a more secure approach for handling passwords
             },
           });
+          // Update the user object with the database ID
+          user.id = newUser.id;
+        } else {
+          // Update the user object with the existing user's database ID
+          user.id = existingUser.id;
+          user.name = existingUser.name;
+          user.email = existingUser.email;
         }
       }
-      // console.log("signIn", user);
-      // console.log(user);
-      // console.log(account);
-      // console.log(credentials);
-      // console.log(email);
-      // console;
       return true;
     },
   },
@@ -107,7 +97,7 @@ export const options: NextAuthOptions = {
         //   console.log(error);
         //   return null;
         // }
-        console.log(credentials, "@@@@@@@@@@@@@");
+        // console.log(credentials, "@@@@@@@@@@@@@");
         const user = { id: "1", name: "John Smith", email: "johm@gmail.com" };
         return user;
       },

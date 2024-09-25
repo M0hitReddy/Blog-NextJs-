@@ -5,6 +5,7 @@ import Provider from "./provider";
 import Navbar from "./components/Navbar";
 import Fotter from "./components/Fotter";
 import { Toaster } from "@/components/ui/toaster";
+import { EditorProvider } from "@/contexts/editor";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,15 +30,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+          rel="stylesheet"
+        ></link>
+      </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-screen`}
       >
         <Provider>
-          <Navbar />
-          {children}
-          <div className="flex-grow"></div>
-          <Fotter />
-          <Toaster />
+          <EditorProvider>
+            <Navbar />
+            {children}
+            <div className="flex-grow"></div>
+            <Fotter />
+            <Toaster />
+          </EditorProvider>
         </Provider>
       </body>
     </html>

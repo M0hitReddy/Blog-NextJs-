@@ -24,7 +24,7 @@ export default function useUpload() {
 
       try {
         const response = await axios.post<ApiResponse<string>>(
-          "http://localhost:3000/api/upload",
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`,
           JSON.stringify({ file: base64String })
         );
         const data = response.data;
@@ -43,9 +43,10 @@ export default function useUpload() {
   };
 
   const handleImageUrl = async (url: string) => {
+    setLoading(true);
     try {
       const response = await axios.get<ApiResponse<string>>(
-        "http://localhost:3000/api/upload?imageUrl=" + url
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/upload?imageUrl=` + url
       );
       const data = response.data;
       if (data.url) {
@@ -55,6 +56,8 @@ export default function useUpload() {
       }
     } catch (error) {
       console.error("Failed to fetch image by URL", error);
+    } finally{
+      setLoading(false);
     }
   };
 

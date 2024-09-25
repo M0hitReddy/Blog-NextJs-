@@ -9,6 +9,8 @@ import Image from "next/image";
 import BlogItem from "@/components/BlogItem";
 import { Separator } from "@/components/ui/separator";
 import CategoryCarousel from "./components/CtegoriesCarousel";
+import { Key } from "lucide-react";
+import React from "react";
 
 export const revalidate = 3600;
 
@@ -25,15 +27,51 @@ function readTime(content: string): string {
     return `${minutes} mins`;
   }
 }
+function extractTextFromJson(jsonContent: any): string {
+  let text = "";
+  if (jsonContent && jsonContent.content) {
+    jsonContent.content.forEach((node: any) => {
+      if (node.type === "text") {
+        text += node.text + " ";
+      } else if (node.content) {
+        text += extractTextFromJson(node);
+      }
+    });
+  }
+  return text.trim();
+}
 
 export default async function Home() {
   const session = await getServerSession();
   // try {
-
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const res = await axios.get<ApiResponse<Post[]>>(
-    `http://localhost:3000/api/posts`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`
   );
-  const posts: Post[] = res.data.data;
+  console.log(process.env.NEXT_PUBLIC_BASE_URL);
+  let posts = res.data.data;
+  // Filter out posts with invalid JSON content
+  posts = posts.filter((post) => {
+    try {
+      JSON.parse(post?.content ?? "");
+      return true;
+    } catch (error) {
+      // console.error(`Error parsing content for post ${post.id}:`, error);
+      return false;
+    }
+  });
+
+  // Parse the content of the remaining posts and extract text
+  posts = posts.map((post) => {
+    let content = "";
+    try {
+      const jsonContent = JSON.parse(post?.content ?? "");
+      content = extractTextFromJson(jsonContent);
+    } catch (error) {
+      console.error(`Error parsing content for post ${post.id}:`, error);
+    }
+    return { ...post, content };
+  });
 
   if (!res.data.success) {
     console.error(res.data.message);
@@ -50,7 +88,7 @@ export default async function Home() {
       ) : (
         // https://picsum.photos/300/180?random=${i}
         <main className="container md:grid md:grid-cols-3 md:gap-4 mx-auto px-0 sm:px-4 relative">
-          <section className="col-span-2 w-full max-w-3xl mx-auto px-1 sm:px-4 py-8 relative">
+          <section className="col-span-2 w-full max-w-3xl justify-end  mx-auto px-1 sm:px-4 py-8 relative">
             <CategoryCarousel className="md:w-full max-w-scr bg-white rounded-none sticky top-0 z-10 mb-12 px-4" />
             <div className="space-y-6 mt-4">
               <div className="space-y-6 w-auto">
@@ -64,13 +102,14 @@ export default async function Home() {
             orientation="vertical"
             className="absolute left-2/3 hidden md:block"
           />
-          <section className="col-span-1 px-6 sticky top-0 h-screen py-10 max-w-sm hidden md:block">
+          <section className="col-span-1 w-full px-6 sticky top-0 h-screen py-10 max-w-sm hidden md:block">
             <h4 className="text-lg font-medium mb-4">Trending Posts</h4>
-            <div className="gap-12 space-y-2 m">
-              {posts.slice(0, 4).map((post, index) => (
-                <div className="border-b py-3">
+            <div className="gap-12 space m">
+              {posts.map((post, index) => (
+                <React.Fragment key={post.id}>
+                <div className="py-3">
                   <h3 className="text-lg font-bold mb-2">
-                    <Link href={`/post/${post.id}`}>{post.title}</Link>
+                    <Link href={`/post/${post.id}`}>{post.title ? post.title : post.content?.substring(0,20)}</Link>
                   </h3>
                   <div className="flex gap-2">
                     <Avatar className="w-6 h-6">
@@ -90,6 +129,8 @@ export default async function Home() {
                     </span>
                   </div>
                 </div>
+                <Separator className="my-3"/>
+              </React.Fragment>
               ))}
             </div>
           </section>

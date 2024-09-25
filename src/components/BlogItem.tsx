@@ -6,13 +6,13 @@ import { Separator } from "./ui/separator";
 export default function BlogItem({ post }: { post: Post }) {
   return (
     <>
-      <div className="flex px-1 sm:flex-row flex-col-reverse sm:items-center gap-6 py-8">
+      <div className="flex px-1  sm:flex-row flex-col-reverse justify-between sm:items-center gap-6 py-8">
         <div className="flex-gro space-y-4">
           <h3 className="text-2xl font-bold mb-2 hover:underline">
-            <Link href={`/post/${post.id}`}>{post.title}</Link>
+            <Link href={`/edit/${post.id}`}>{post.title ? post.title : post.content?.substring(0, 100)}</Link>
           </h3>
           <p className="text-muted-foreground mb-4 break-words">
-            {post.content?.split(" ").slice(0, 15).join(" ")}...
+            {post.title && post.content?.split(" ").slice(0, 30).join(" ") + "..."}
           </p>
           <div className="flex items-center space-x-2">
             <Avatar className="w-6 h-6">
@@ -37,7 +37,7 @@ export default function BlogItem({ post }: { post: Post }) {
           alt={post.title}
           height={180}
           width={300}
-          className="w-full md:w-1/4 sm:w-1/3 aspect-video object-cover rounded-sm "
+          className="h-1/4 self-center md:w-1/4 sm:w-1/3 aspect-video object-cover rounded-sm "
         />
       </div>
       <Separator className="" />

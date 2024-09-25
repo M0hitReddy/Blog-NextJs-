@@ -22,7 +22,7 @@ export default async function CategoryCarousel({
   className?: string;
 }) {
   const res = await axios.get<ApiResponse<Category[]>>(
-    "http://localhost:3000/api/categories"
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`
   );
   const categories: Category[] = [{ id: "all", name: "All" }, ...res.data.data];
 

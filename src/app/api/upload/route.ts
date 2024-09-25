@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const imageUrl = searchParams.get("imageUrl");
+    console.log(imageUrl, "imageurl");
     if (!imageUrl) {
         return NextResponse.json(
             { success: false, message: "No image URL provided" },
@@ -47,6 +48,7 @@ export async function GET(req: NextRequest) {
     try {
         const response = await cloudinary.uploader.upload(imageUrl, {
             folder: "uploads", // Optional: Add a folder in Cloudinary
+            
             
         });
         return NextResponse.json(
