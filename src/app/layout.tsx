@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Fotter from "./components/Fotter";
 import { Toaster } from "@/components/ui/toaster";
 import { EditorProvider } from "@/contexts/editor";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -40,17 +41,24 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground flex flex-col h-screen`}
       >
-        <Provider>
-          <EditorProvider>
-            <Navbar />
-            {children}
-            <div className="flex-grow"></div>
-            <Fotter />
-            <Toaster />
-          </EditorProvider>
-        </Provider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Provider>
+            <EditorProvider>
+              <Navbar />
+              {children}
+              <div className="flex-grow"></div>
+              <Fotter />
+              <Toaster />
+            </EditorProvider>
+          </Provider>
+        </ThemeProvider>
       </body>
     </html>
   );

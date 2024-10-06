@@ -1,25 +1,32 @@
 interface Post {
   id: string;
   title: string;
+  subtitle?: string;
   content?: string;
+  previewImage?: string;
   published: boolean;
-  author: User;
+  publishedAt?: Date;
+  author?: User;
   authorId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  comments: Comment[];
-  bookmarks: Bookmark[];
-  likes: Like[];
-  categories: CategoryToPost[];
+  createdAt?: Date;
+  updatedAt?: Date;
+  comments?: Comment[];
+  bookmarks?: Bookmark[];
+  likes?: Like[];
+  topics?: Topic[];
+  categories?: Category[];
 }
 
 // Assuming you have the following interfaces defined for related models
 interface User {
   id: string;
   email: string;
+  image?: string;
   name?: string;
   // Add other fields as necessary
 }
+
+interface Topic extends Category {}
 
 interface Category {
   id: string;

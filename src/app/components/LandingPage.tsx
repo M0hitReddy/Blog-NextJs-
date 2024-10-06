@@ -56,7 +56,7 @@ export default function LandingPage() {
             <p className="text-xl text-gray-600 mb-8">
             Discover stories, thinking, and expertise from writers on any topic.
             </p>
-            <Button className="bg-black  text-primary-foreground rounded-full px-6 py-3 h-max text-lg font-normal ">
+            <Button className="  text-primary-foreground rounded-full px-6 py-3 h-max text-lg font-normal ">
               Start reading
             </Button>
           </div>

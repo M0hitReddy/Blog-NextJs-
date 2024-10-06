@@ -35,9 +35,11 @@ export const options: NextAuthOptions = {
           },
         });
         if (!existingUser) {
+          console.log("Creating new user", profile);
           const newUser = await prisma.user.create({
             data: {
               email: profile?.email ?? "",
+              image: user.image ?? "",
               name: profile?.name ?? "",
               password: "", // Consider a more secure approach for handling passwords
             },
@@ -48,6 +50,7 @@ export const options: NextAuthOptions = {
           // Update the user object with the existing user's database ID
           user.id = existingUser.id;
           user.name = existingUser.name;
+          user.image = existingUser.image;
           user.email = existingUser.email;
         }
       }

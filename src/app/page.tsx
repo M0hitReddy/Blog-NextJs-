@@ -11,8 +11,10 @@ import { Separator } from "@/components/ui/separator";
 import CategoryCarousel from "./components/CtegoriesCarousel";
 import { Key } from "lucide-react";
 import React from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-export const revalidate = 3600;
+// export const revalidate = 3600;
+export const forceDynamic = true;
 
 function readTime(content: string): string {
   const wordsPerMinute = 200;
@@ -43,12 +45,15 @@ function extractTextFromJson(jsonContent: any): string {
 
 export default async function Home() {
   const session = await getServerSession();
+    // useTheme().setTheme("system");
+
+  console.log(session?.user.image, "session?.user.image");
   // try {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
   const res = await axios.get<ApiResponse<Post[]>>(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?published=true`
   );
-  console.log(process.env.NEXT_PUBLIC_BASE_URL);
+  // console.log(process.env.NEXT_PUBLIC_BASE_URL);
   let posts = res.data.data;
   // Filter out posts with invalid JSON content
   posts = posts.filter((post) => {
@@ -89,7 +94,7 @@ export default async function Home() {
         // https://picsum.photos/300/180?random=${i}
         <main className="container md:grid md:grid-cols-3 md:gap-4 mx-auto px-0 sm:px-4 relative">
           <section className="col-span-2 w-full max-w-3xl justify-end  mx-auto px-1 sm:px-4 py-8 relative">
-            <CategoryCarousel className="md:w-full max-w-scr bg-white rounded-none sticky top-0 z-10 mb-12 px-4" />
+            <CategoryCarousel className="md:w-full max-w-scr bg-background rounded-none sticky top-0 z-10 mb-12 px-4" />
             <div className="space-y-6 mt-4">
               <div className="space-y-6 w-auto">
                 {posts.map((post, index) => (
@@ -102,37 +107,42 @@ export default async function Home() {
             orientation="vertical"
             className="absolute left-2/3 hidden md:block"
           />
-          <section className="col-span-1 w-full px-6 sticky top-0 h-screen py-10 max-w-sm hidden md:block">
-            <h4 className="text-lg font-medium mb-4">Trending Posts</h4>
-            <div className="gap-12 space m">
-              {posts.map((post, index) => (
-                <React.Fragment key={post.id}>
-                <div className="py-3">
-                  <h3 className="text-lg font-bold mb-2">
-                    <Link href={`/post/${post.id}`}>{post.title ? post.title : post.content?.substring(0,20)}</Link>
-                  </h3>
-                  <div className="flex gap-2">
-                    <Avatar className="w-6 h-6">
-                      <AvatarImage
-                        src={`https://picsum.photos/300/180?random=${Math.floor(
-                          Math.random() * 100
-                        )}`}
-                        alt={post.author.name}
-                      />
-                      <AvatarFallback>{post.author.name}</AvatarFallback>
-                    </Avatar>
-                    <span className="text-sm font-medium">
-                      {post.author.name}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      · {readTime(post.content ?? "")} read
-                    </span>
-                  </div>
-                </div>
-                <Separator className="my-3"/>
-              </React.Fragment>
-              ))}
-            </div>
+
+          <section className="col-span-1 w-full px-6 sticky top-0 h-screen my-10 max-w-sm hidden md:block ">
+            <ScrollArea className="col-span-1 w-full px-6 sticky top-0 h-screen  max-w-sm hidden md:block overflow-auto">
+              <h4 className="text-lg font-medium mb-4">Trending Posts</h4>
+              <div className="gap-12 space m">
+                {posts.map((post, index) => (
+                  <React.Fragment key={post.id}>
+                    <div className="py-3">
+                      <h3 className="text-lg font-bold mb-2">
+                        <Link href={`/post/${post.id}`}>
+                          {post.title
+                            ? post.title
+                            : post.content?.substring(0, 20)}
+                        </Link>
+                      </h3>
+                      <div className="flex gap-2">
+                        <Avatar className="w-6 h-6">
+                          <AvatarImage
+                            src={post.author?.image}
+                            alt={post.author?.name}
+                          />
+                          <AvatarFallback>{post.author?.name}</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm font-medium">
+                          {post.author?.name}
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          · {readTime(post.content ?? "")} read
+                        </span>
+                      </div>
+                    </div>
+                    <Separator className="my-3" />
+                  </React.Fragment>
+                ))}
+              </div>
+            </ScrollArea>
           </section>
         </main>
       )}
@@ -140,35 +150,3 @@ export default async function Home() {
   );
 }
 
-function FeaturedPost({ post }: { post: Post }) {
-  return (
-    <section className="mb-16">
-      <h2 className="text-3xl font-bold mb-8">Featured Post</h2>
-      <div className="group">
-        <Image
-          src="https://picsum.photos/300/180?random=0"
-          height={180}
-          width={300}
-          alt="Featured post"
-          className="w-full aspect-video object-cover rounded-lg mb-6"
-        />
-        <h3 className="text-2xl font-bold mb-2 group-hover:underline">
-          <Link href="/post/featured">{post.title}</Link>
-        </h3>
-        <p className="text-muted-foreground mb-4">
-          {post.content?.split(" ").slice(0, 20).join(" ")}...
-        </p>
-        <div className="flex items-center space-x-2">
-          <Avatar className="w-6 h-6">
-            <AvatarImage src="/placeholder-avatar.jpg" alt="Author" />
-            <AvatarFallback>A</AvatarFallback>
-          </Avatar>
-          <span className="text-sm font-medium">{post.author.name}</span>
-          <span className="text-sm text-muted-foreground">
-            · {readTime(post.content ?? "")} read
-          </span>
-        </div>
-      </div>
-    </section>
-  );
-}

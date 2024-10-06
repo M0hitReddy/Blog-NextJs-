@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   try {
     const post = await prisma.post.findUnique({
       where: { id: postId ?? "" },
-      include: { author: true },
+      include: { author: true, categories: true, topics: true },
     });
     return NextResponse.json({
       success: true,

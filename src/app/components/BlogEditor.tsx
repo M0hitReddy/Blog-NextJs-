@@ -132,7 +132,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 mb-4  sticky top-0 z-10 bg- bg-opacity-5 backdrop-blur-xl  justify-between shadowxl p-2 rounded-x">
+    <div className="flex flex-wrap gap-2 mb-4  sticky top-0 z-10  backdrop-blur-[8px]  justify-between shadowxl p-2 ">
       <Button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -230,12 +230,14 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
               <div className="flex gap-2 mt-1">
                 <Input
                   type="text"
+                  className="rounded-full"
                   id="image-url"
                   placeholder="https://elampleimage.img.in"
                   onChange={(e) => setUrl(e.target.value)}
                   value={url || ""}
                 />
                 <Button
+                className="rounded-full"
                   onClick={async () => {
                     await handleImageUrl(url || "");
                     // if (imageUrl) {
@@ -251,7 +253,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
               <Input
                 type="file"
                 id="image-file"
-                className="mt-1"
+                className="mt-1 rounded-full border-primary"
                 // ref={fileInputRef}
                 // accept="image/*"
                 onChange={async (e) => {
@@ -302,9 +304,9 @@ export default function BlogEditor() {
   //   }
   // }, [editor]);
 
-  useEffect(() => {
-    console.log("Editor is ready to use", editor?.getText());
-  }, [title]);
+  // useEffect(() => {
+  //   console.log("Editor is ready to use", editor?.getText());
+  // }, [title]);
 
   // const handlePublish = async () => {
   //   const content = editor?.getHTML() || "";
@@ -324,61 +326,9 @@ export default function BlogEditor() {
   };
 
   return (
-    <div className="mx-auto w-full sm:max-w-3xl px-2 bg-background">
-      {/* Header */}
-      {/* <header className="border-b">
-        <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold">BlogApp</Link>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon">
-              <Bell className="h-5 w-5" />
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder-avatar.jpg" alt="@johndoe" />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">John Doe</p>
-                    <p className="text-xs leading-none text-muted-foreground">john@example.com</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      </header> */}
-
+    <div className="mx-auto w-full sm:max-w-3xl px-2 bg-">
+      
       <div className="container mx-auto px-4 py-6 flex">
-        {/* Sidebar */}
-        {/* <aside className="w-64 pr-8">
-          <nav className="space-y-2">
-            <Link href="/" className="flex items-center space-x-2 px-2 py-1 rounded hover:bg-accent">
-              <Home className="h-4 w-4" />
-              <span>Dashboard</span>
-            </Link>
-            <Link href="/posts" className="flex items-center space-x-2 px-2 py-1 rounded hover:bg-accent">
-              <FileText className="h-4 w-4" />
-              <span>My Posts</span>
-            </Link>
-          </nav>
-        </aside> */}
-
         {/* Main Content */}
         <main className="flex-1 max-w-3xl">
           <div className="space-y-6">
@@ -388,7 +338,7 @@ export default function BlogEditor() {
                 placeholder="Enter a catchy title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="text-4xl font-semibold border-x-0 border-t-0 px-0 pb-4 h-max focus:border-b-primary focus-visible:ring-0 focus-visible:ring-offset-0 rounded-none"
+                className="text-4xl bg-transparent font-semibold border-x-0 border-t-0 px-0 pb-4 h-max focus:border-b-primary focus-visible:ring-0 focus-visible:ring-offset-0 rounded-none"
               />
               {/* <div className="text-sm text-muted-foreground mt-2">
                 Write a catchy title for your blog post

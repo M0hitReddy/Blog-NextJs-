@@ -23,15 +23,26 @@
 
 .ProseMirror a:hover {
   cursor: pointer;
+  
   /* color: #0000FF;
   text-decoration: underline; */
 }
 
-.ProseMirror pre {
-  background-color: #f4f4f4;
-  border: 1px solid #ddd;
-  border-left: 4px solid #816ca3;
-  color: #3b3b3b;
+.prose a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6, strong) {
+  color: hsl(var(--primary));
+}
+
+.prose pre {
+  background-color: hsl(var(--muted));
+  
+  border: 1px solid hsl(var(--muted));
+  border-left: 4px solid hsl(var(--primary));
+  color: hsl(var(--muted-foreground));
   page-break-inside: avoid;
   font-family: monospace;
   font-size: 15px;
@@ -45,8 +56,8 @@
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  /* color: hsl(var(--foreground));
+  background: hsl(var(--background)); */
   font-family: Arial, Helvetica, sans-serif;
 }
 

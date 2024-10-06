@@ -30,15 +30,15 @@ export default async function CategoryCarousel({
     <Card className={cn(" border-0 shadow-none", className)}>
       <CardContent className="p-0">
         <Carousel>
-          <CarouselContent className="py-0 px-5">
+          <CarouselContent className="py-0 px-6">
             {categories.map((category) => (
               <CarouselItem key={category.id} className="basis-auto px-0 py-4">
                 <CategoryLink category={category} />
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="border-0 -left-4" />
-          <CarouselNext className="border-0 -right-4" />
+          <CarouselPrevious className="border-0 -left-4 bg-transparent" />
+          <CarouselNext className="border-0 -right-4" bg-transparent/>
         </Carousel>
       </CardContent>
     </Card>

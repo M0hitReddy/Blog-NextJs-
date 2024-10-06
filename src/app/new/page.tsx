@@ -11,8 +11,7 @@ import CodeBlock from "@tiptap/extension-code-block";
 import Image from "@tiptap/extension-image";
 
 export default function New() {
-  const { editor, setEditor, title, setTitle } = useEditorContext();
-  
+  const { setEditor, setTitle } = useEditorContext();
   const newEditor = useEditor({
     extensions: [
       Link.configure({
@@ -22,7 +21,7 @@ export default function New() {
       StarterKit.configure({
         codeBlock: false,
       }),
-      Image.configure({HTMLAttributes: {class: "w-full"}}),
+      Image.configure({ HTMLAttributes: { class: "w-full" } }),
       Underline,
       CodeBlock,
     ],
@@ -38,6 +37,7 @@ export default function New() {
 
   useEffect(() => {
     if (newEditor) {
+      setTitle("");
       setEditor(newEditor);
     }
   }, [newEditor]);

@@ -24,12 +24,18 @@ import { useToast } from "@/hooks/use-toast";
 import { useEditorContext } from "@/contexts/editor";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
+import PublishPreviewDialog from "../edit/[postId]/PublishPreviewDialog";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 
 export default function Navbar() {
   // const session = await getServerSession();
   const { data: session, status } = useSession();
+  console.log(session, "session");
+  // useTheme().setTheme("system");
   const [isLoading, setIsLoading] = useState(true);
   const { editor, title, setTitle } = useEditorContext();
+  const [previewOpen, setPreviewOpen] = useState<boolean>(false);
   const router = useRouter();
   const { toast } = useToast();
   const path = usePathname();
@@ -41,11 +47,14 @@ export default function Navbar() {
 
   const handlePublish = async () => {
     // Here you would typically send the data to your backend
-    toast({
-      title: "Blog post published!",
-      description: "Your blog post has been successfully saved and published.",
-      variant: "default",
-    });
+    if(path.startsWith("/new")) 
+    await handleSaveClick();
+    setPreviewOpen(true);
+    // toast({
+    //   title: "Blog post published!",
+    //   description: "Your blog post has been successfully saved and published.",
+    //   variant: "default",
+    // });
   };
 
   const handleSaveClick = async () => {
@@ -59,26 +68,33 @@ export default function Navbar() {
         });
         const postId = res.data.data;
         console.log(postId, "postId");
+        
         router.push(`/edit/${postId}`);
+        
       }
       else {
         console.log(path.split("/").pop(), "path");
-        await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}:3000/api/post?postId=${path.split("/").pop()}`, {
+        await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/api/post?postId=${path.split("/").pop()}`, {
           title: title,
           content: editor?.getJSON(),
           status: "draft",
         });
-
+        
       }
+      toast({
+        title: "Draft saved!",
+        description: "Your blog post has been successfully saved as a draft.",
+        variant: "default",
+      });
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      toast({
+        title: "Draft saved!",
+        description: "Error saving draft.",
+        variant: "destructive",
+      });
     }
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    toast({
-      title: "Draft saved!",
-      description: "Your blog post has been successfully saved as a draft.",
-      variant: "default",
-    });
+    
   };
 
   // if (isLoading) {
@@ -87,8 +103,8 @@ export default function Navbar() {
   return (
     <nav className="p-4 border-b border-primary">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-3xl font-extrabold ">
-          Blog.
+        <Link href="/" className="text-3xl font-sans font-extrabold text-center flex items-center">
+          Aura&nbsp;<strong className="text-5xl font-serif">&#8734;</strong>
         </Link>
 
         <Sheet>
@@ -141,10 +157,11 @@ export default function Navbar() {
 
         {path.startsWith("/new") || path.startsWith("/edit") ? (
           <div className="flex justify-end space-x-4 mt-auto">
-            <Button variant="outline" onClick={handleSaveClick}>
+            <PublishPreviewDialog isOpen={previewOpen} setIsOpen={setPreviewOpen} />
+            <Button variant="outline" onClick={handleSaveClick} className="rounded-full hover:bg-transparent hover:border-primary duration-300 transition-all">
               Save Draft
             </Button>
-            <Button onClick={handlePublish}>Publish</Button>
+            <Button onClick={handlePublish} className="rounded-full hover:ring-2 hover:ring-primary hover:ring-offset-2 duration-200 transition-all">Publish</Button>
           </div>
         ) : (
           !isLoading && (
@@ -167,11 +184,13 @@ export default function Navbar() {
                       className="hover:cursor-pointer"
                     >
                       <Avatar>
-                        <AvatarImage src={session?.user?.image || ""} />
+                        <AvatarImage src={session?.user.image || ""} />
                         <AvatarFallback>
                           {session?.user?.name?.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
+
+                      {/* <Image height={180} width={300} src={session.user.image} alt="" /> */}
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent className="w">

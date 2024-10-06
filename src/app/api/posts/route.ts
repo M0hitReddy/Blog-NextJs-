@@ -5,9 +5,12 @@ import { useSession } from "next-auth/react";
 import { NextRequest, NextResponse } from "next/server";
 import { options } from "../auth/[...nextauth]/options";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const searchParams = new URL(req.url).searchParams;
+  const published = searchParams.get("published") === "true";
   try {
     const posts = await prisma.post.findMany({
+      where: published ? { published: true } : {published: false},
       include: { author: true },
       orderBy: { createdAt: "desc" },
     });
