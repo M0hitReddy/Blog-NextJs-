@@ -40,7 +40,7 @@ export default function New() {
       setTitle("");
       setEditor(newEditor);
     }
-  }, [newEditor]);
+  }, [newEditor, setEditor, setTitle]);
 
   return (
     <>

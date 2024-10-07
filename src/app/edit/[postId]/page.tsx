@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BlogEditor from "../../components/BlogEditor";
 import { useEditorContext } from "@/contexts/editor";
 import Link from "@tiptap/extension-link";
@@ -9,20 +9,22 @@ import { useEditor } from "@tiptap/react";
 import Underline from "@tiptap/extension-underline";
 import CodeBlock from "@tiptap/extension-code-block";
 import Image from "@tiptap/extension-image";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
-import { useToast } from "@/hooks/use-toast";
+import { Post } from "@/types/schemas";
+import { Loader2 } from "lucide-react";
+// import { useToast } from "@/hooks/use-toast";
 
 export default function Edit() {
-  const { editor, setEditor, title, setTitle } = useEditorContext();
+  const { setEditor, setTitle } = useEditorContext();
   const path = usePathname();
   const postId = path.split("/").pop();
   const [post, setPost] = useState<Post | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
+  const [loading, setLoading] = useState<boolean>(true);
+  // const { toast } = useToast();
   // get search params
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const newEditor = useEditor({
     extensions: [
       Link.configure({
@@ -76,7 +78,7 @@ export default function Edit() {
     //     description: "Your blog post has been successfully saved as a draft.",
     //     variant: "default",
     //   });
-  }, [path]);
+  }, [path, postId]);
 
   useEffect(() => {
     if (!post) return;
@@ -85,7 +87,7 @@ export default function Edit() {
     newEditor && newEditor.commands.setContent(postContent || "");
     setTitle(post.title);
     setEditor(newEditor);
-  }, [post]);
+  }, [post, newEditor, setEditor, setTitle]);
 
   useEffect(() => {
     if (path.startsWith("/edit")) {
@@ -95,7 +97,13 @@ export default function Edit() {
 
   return (
     <>
-      <BlogEditor />
+      {loading ? (
+        <div className="animate-spin">
+          <Loader2 />
+        </div>
+      ) : (
+        <BlogEditor />
+      )}
     </>
   );
 }

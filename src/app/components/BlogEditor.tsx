@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Image from "@tiptap/extension-image";
+import { EditorContent } from "@tiptap/react";
+// import StarterKit from "@tiptap/starter-kit";
+// import Image from "@tiptap/extension-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/dialog";
 
 import {
-  Bell,
   UnderlineIcon,
   Bold,
   Italic,
@@ -31,15 +30,15 @@ import {
   LinkIcon,
 } from "lucide-react";
 // import lowlight from 'lowlight'
-import Underline from "@tiptap/extension-underline";
-import CodeBlock from "@tiptap/extension-code-block";
-import Link from "@tiptap/extension-link";
+// import Underline from "@tiptap/extension-underline";
+// import CodeBlock from "@tiptap/extension-code-block";
+// import Link from "@tiptap/extension-link";
 import { Editor } from "@tiptap/react";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
 import useUpload from "@/hooks/use-upload";
 import { Label } from "@/components/ui/label";
 import { useEditorContext } from "@/contexts/editor";
-import { Separator } from "@/components/ui/separator";
+// import { Separator } from "@/components/ui/separator";
 
 
 const LinkDialog = ({ editor, isOpen, setIsOpen }: { editor: Editor, isOpen: boolean, setIsOpen: (isOpen: boolean) => void }) => {
@@ -110,22 +109,22 @@ const LinkDialog = ({ editor, isOpen, setIsOpen }: { editor: Editor, isOpen: boo
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const [url, setUrl] = useState<string | null>(null);
-  const { loading, imageUrl, handleFileUpload, handleImageUrl, fileInputRef } =
+  const { loading, imageUrl, handleFileUpload, handleImageUrl } =
     useUpload();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [isLinkDialogOpen, setIsLinkDialogOpen] = useState<boolean>(false);
 
- const addLink = () => {
-    const url = window.prompt("URL");
-    if (url && editor) {
-      editor.chain().focus().setLink({ href: url }).run();
-    }
-  };
+//  const addLink = () => {
+//     const url = window.prompt("URL");
+//     if (url && editor) {
+//       editor.chain().focus().setLink({ href: url }).run();
+//     }
+//   };
   useEffect(() => {
     if (editor && imageUrl)
       editor.chain().focus().setImage({ src: imageUrl }).run();
     setDialogOpen(false);
-  }, [imageUrl]);
+  }, [imageUrl, editor]);
 
   if (!editor) {
     return null;
@@ -287,7 +286,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
 };
 
 export default function BlogEditor() {
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const {editor, title, setTitle} = useEditorContext();
   
 
@@ -316,14 +315,14 @@ export default function BlogEditor() {
   //   // For this example, we'll just log it to the console
   // };
 
-  const handlePublish = async () => {
-    // Here you would typically send the data to your backend
-    toast({
-      title: "Blog post published!",
-      description: "Your blog post has been successfully saved and published.",
-      variant: "default",
-    });
-  };
+  // const handlePublish = async () => {
+  //   // Here you would typically send the data to your backend
+  //   toast({
+  //     title: "Blog post published!",
+  //     description: "Your blog post has been successfully saved and published.",
+  //     variant: "default",
+  //   });
+  // };
 
   return (
     <div className="mx-auto w-full sm:max-w-3xl px-2 bg-">

@@ -1,42 +1,7 @@
 import prisma from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeContent, suggestCategories } from "../utils/categories";
+import { suggestCategories } from "../utils/categories";
 
-const CATEGORIES = [
-  "Technology",
-  "Programming",
-  "Web Development",
-  // "Data Science",
-  "Exercise",
-  "Movies",
-  "Animation",
-  "Music",
-  "Pop Culture",
-  "Science Fiction",
-  "Art",
-  "Artificial Intelligence",
-  "Machine Learning",
-  "Cybersecurity",
-  "Cloud Computing",
-  "DevOps",
-  "Mobile Development",
-  "UI/UX Design",
-  "Business",
-  "Entrepreneurship",
-  "Marketing",
-  "Productivity",
-  "Personal Development",
-  "Health",
-  "Fitness",
-  "Travel",
-  "Food",
-  "Photography",
-  "Music",
-  "Art",
-  "Literature",
-  "Education",
-  "Flowers",
-];
 
 export async function POST(req: NextRequest) {
   const { content } = await req.json();

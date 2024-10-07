@@ -5,13 +5,14 @@ import LandingPage from "./components/LandingPage";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { ApiResponse } from "@/types/ApiResponse";
-import Image from "next/image";
+// import Image from "next/image";
 import BlogItem from "@/components/BlogItem";
 import { Separator } from "@/components/ui/separator";
 import CategoryCarousel from "./components/CtegoriesCarousel";
-import { Key } from "lucide-react";
+// import { Key } from "lucide-react";
 import React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Post } from "@/types/schemas";
 
 // export const revalidate = 3600;
 export const forceDynamic = true;
@@ -29,9 +30,12 @@ function readTime(content: string): string {
     return `${minutes} mins`;
   }
 }
+
+//
 function extractTextFromJson(jsonContent: any): string {
   let text = "";
   if (jsonContent && jsonContent.content) {
+    //
     jsonContent.content.forEach((node: any) => {
       if (node.type === "text") {
         text += node.text + " ";
@@ -45,7 +49,7 @@ function extractTextFromJson(jsonContent: any): string {
 
 export default async function Home() {
   const session = await getServerSession();
-    // useTheme().setTheme("system");
+  // useTheme().setTheme("system");
 
   console.log(session?.user.image, "session?.user.image");
   // try {
@@ -112,7 +116,7 @@ export default async function Home() {
             <ScrollArea className="col-span-1 w-full px-6 sticky top-0 h-screen  max-w-sm hidden md:block overflow-auto">
               <h4 className="text-lg font-medium mb-4">Trending Posts</h4>
               <div className="gap-12 space m">
-                {posts.map((post, index) => (
+                {posts.map((post) => (
                   <React.Fragment key={post.id}>
                     <div className="py-3">
                       <h3 className="text-lg font-bold mb-2">
@@ -149,4 +153,3 @@ export default async function Home() {
     </>
   );
 }
-

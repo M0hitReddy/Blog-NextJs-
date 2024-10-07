@@ -1,36 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 // import { useToast } from "@/components/ui//t"
-import { useToast } from "@/hooks/use-toast";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Bell,
-  ChevronDown,
-  Home,
-  FileText,
-  Settings,
-  LogOut,
-} from "lucide-react";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+
+// import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Toaster } from "@/components/ui/toaster";
 
 export default function BlogEditorPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {

@@ -1,12 +1,12 @@
 // "use client";
 
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { ApiResponse } from "@/types/ApiResponse";
 import axios from "axios";
-import { useRouter } from "next/router";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { useEffect, useState } from "react";
+// import { useRouter } from "next/router";
+// import { EditorContent, useEditor } from "@tiptap/react";
+// import StarterKit from "@tiptap/starter-kit";
+// import { useEffect, useState } from "react";
 // import Link from "@tiptap/extension-link";
 // import CodeBlock from "@tiptap/extension-code-block";
 // import Underline from "@tiptap/extension-underline";
@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-
+import type { Post } from "@/types/schemas";
 
 const fetchPost = async (postId: string) => {
   try {
@@ -30,7 +30,7 @@ const fetchPost = async (postId: string) => {
       type: "doc",
       content: content.content,
     };
-  
+
     // setPost(res.data.data);
     // editor?.commands.setContent(JSON.parse(content ?? ""));
   } catch (error) {
@@ -41,14 +41,13 @@ const fetchPost = async (postId: string) => {
 export default async function Post({ params }: { params: { postId: string } }) {
   const postId = params.postId;
   // const [post, setPost] = useState<Post | null>(null);
-  
+
   // const editor = getEditor();
   // useEffect(() => {
-    // if (!postId) return;
-    
+  // if (!postId) return;
 
-    const post = await fetchPost(postId);
-    // console.log(post?.content, "post?.content");
+  const post = await fetchPost(postId);
+  // console.log(post?.content, "post?.content");
   // }, [postId, editor]);
 
   return (
@@ -66,9 +65,11 @@ export default async function Post({ params }: { params: { postId: string } }) {
                 onChange={(e) => setTitle(e.target.value)}
                 className="text-4xl bg-transparent font-semibold border-x-0 border-t-0 px-0 pb-4 h-max focus:border-b-primary focus-visible:ring-0 focus-visible:ring-offset-0 rounded-none"
               /> */}
-                {post?.title && <p className="text-4xl bg-transparent font-semibold border-b px-0 pb-4 h-max">
-                  {post?.title}
-                </p>}
+                {post?.title && (
+                  <p className="text-4xl bg-transparent font-semibold border-b px-0 pb-4 h-max">
+                    {post?.title}
+                  </p>
+                )}
                 {/* <div className="text-sm text-muted-foreground mt-2">
                 Write a catchy title for your blog post
               </div> */}
@@ -83,7 +84,7 @@ export default async function Post({ params }: { params: { postId: string } }) {
                 {post?.content && renderContent(post.content)}
               </article>
             </div>
-            {(post?.topics?.length ?? 0) > 0 &&
+            {(post?.topics?.length ?? 0) > 0 && (
               <>
                 <Separator className="my-6" />
                 <div className="space-y-2">
@@ -100,14 +101,14 @@ export default async function Post({ params }: { params: { postId: string } }) {
                   </div>
                 </div>
               </>
-            }
+            )}
           </main>
         </div>
       </div>
     </>
   );
 }
-
+//
 function renderContent(content: any[]): React.ReactNode {
   if (!content || !Array.isArray(content)) {
     return null; // or return a fallback UI
@@ -115,52 +116,66 @@ function renderContent(content: any[]): React.ReactNode {
   // console.log(content, "content");
   return content.map((item, index) => {
     switch (item.type) {
-      case 'paragraph':
-        return <p className="text-xl" key={index}>{renderContent(item.content)}</p>;
-      case 'text':
+      case "paragraph":
+        return (
+          <p className="text-xl" key={index}>
+            {renderContent(item.content)}
+          </p>
+        );
+      case "text":
         if (item.marks) {
+          //
           return item.marks.reduce((acc: React.ReactNode, mark: any) => {
             switch (mark.type) {
-              case 'bold':
+              case "bold":
                 return <strong key={index}>{acc}</strong>;
-              case 'italic':
+              case "italic":
                 return <em key={index}>{acc}</em>;
-              case 'underline':
+              case "underline":
                 return <u key={index}>{acc}</u>;
-              case 'link':
-                return <Link key={index} href={mark.attrs.href}>{acc}</Link>;
+              case "link":
+                return (
+                  <Link key={index} href={mark.attrs.href}>
+                    {acc}
+                  </Link>
+                );
               default:
                 return acc;
             }
           }, item.text);
         }
         return item.text;
-      case 'image':
+      case "image":
         return (
-          <Image 
+          <Image
             key={index}
-            src={item.attrs.src} 
-            alt={item.attrs.alt || ''} 
-            width={500} 
-            height={300} 
-            style={{width: '100%', height: 'auto'}}
+            src={item.attrs.src}
+            alt={item.attrs.alt || ""}
+            width={500}
+            height={300}
+            style={{ width: "100%", height: "auto" }}
           />
         );
-      case 'heading':
-        const HeadingTag = `h${item.attrs.level}` as keyof JSX.IntrinsicElements;
-        return <HeadingTag key={index}>{renderContent(item.content)}</HeadingTag>;
-      case 'horizontalRule':
+      case "heading":
+        const HeadingTag =
+          `h${item.attrs.level}` as keyof JSX.IntrinsicElements;
+        return (
+          <HeadingTag key={index}>{renderContent(item.content)}</HeadingTag>
+        );
+      case "horizontalRule":
         return <hr key={index} />;
-      case 'codeBlock':
-        return <pre key={index}><code>{item.content[0].text}</code></pre>;
+      case "codeBlock":
+        return (
+          <pre key={index}>
+            <code>{item.content[0].text}</code>
+          </pre>
+        );
       default:
         console.warn(`Unhandled content type: ${item.type}`);
         return null;
     }
   });
 }
-
-
 
 // function getEditor() {
 //   const editor = useEditor({

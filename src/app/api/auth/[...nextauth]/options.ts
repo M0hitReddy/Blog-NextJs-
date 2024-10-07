@@ -1,6 +1,6 @@
 // import { type NextAuthOptions } from "next-auth";
 import prisma from "@/lib/dbConnect";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+// import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -8,7 +8,7 @@ import GoogleProvider from "next-auth/providers/google";
 // import prisma from "@/lib/dbConnect";
 export const options: NextAuthOptions = {
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       // console.log(token, "JWT");
       if (user) {
         // User object is only passed on initial sign in
@@ -82,7 +82,7 @@ export const options: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize() {
         // prisma.$connect();
         // try {
         //   const user = await prisma.user.findFirst({

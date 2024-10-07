@@ -1,12 +1,12 @@
 "use client";
 
 import React, { createContext, useContext, useState, useMemo } from 'react';
-import { useEditor, EditorContent, Editor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
-import Image from '@tiptap/extension-image';
-import Underline from '@tiptap/extension-underline';
-import CodeBlock from '@tiptap/extension-code-block';
+import { Editor } from '@tiptap/react';
+// import StarterKit from '@tiptap/starter-kit';
+// import Link from '@tiptap/extension-link';
+// import Image from '@tiptap/extension-image';
+// import Underline from '@tiptap/extension-underline';
+// import CodeBlock from '@tiptap/extension-code-block';
 
 interface EditorContextType {
   editor: Editor | null;

@@ -1,18 +1,9 @@
-import {
-  useState,
-  useEffect,
-  use,
-  SetStateAction,
-  useCallback,
-  useRef,
-} from "react";
+import { useState, useEffect, SetStateAction, useCallback } from "react";
 import { X, Image as ImageIcon, Tag, Loader2 } from "lucide-react";
 import {
   Command,
   CommandInput,
   CommandList,
-  CommandEmpty,
-  CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
 
@@ -44,8 +35,9 @@ import { Topic } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import natural from "natural";
+// import natural from "natural";
 import { usePathname, useRouter } from "next/navigation";
+import { Category, Post } from "@/types/schemas";
 interface PreviewDialogProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -57,33 +49,6 @@ interface PreviewData {
   categories: Category[];
   topics: Topic[];
 }
-const CATEGORIES = [
-  "Technology",
-  "Programming",
-  "Web Development",
-  "Data Science",
-  "Artificial Intelligence",
-  "Machine Learning",
-  "Cybersecurity",
-  "Cloud Computing",
-  "DevOps",
-  "Mobile Development",
-  "UI/UX Design",
-  "Business",
-  "Entrepreneurship",
-  "Marketing",
-  "Productivity",
-  "Personal Development",
-  "Health",
-  "Fitness",
-  "Travel",
-  "Food",
-  "Photography",
-  "Music",
-  "Art",
-  "Literature",
-  "Education",
-];
 
 export default function PublishPreviewDialog({
   isOpen,
@@ -96,7 +61,7 @@ export default function PublishPreviewDialog({
   const [suggestedCategories, setSuggestedCategories] = useState<Category[]>(
     []
   );
-  const[loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [previewData, setPreviewData] = useState<PreviewData>({
     title: title,
     subtitle: "",
@@ -114,7 +79,7 @@ export default function PublishPreviewDialog({
   }, [title]);
 
   useEffect(() => {
-    if(!editor || !isOpen) return;
+    if (!editor || !isOpen) return;
     async function fetchSuggestedCategories() {
       setLoading(true);
       const text = editor?.getText() ?? "";
@@ -148,7 +113,7 @@ export default function PublishPreviewDialog({
       ...prev,
       featuredImage: images[0]?.src ?? "",
     }));
-  }, [editor,isOpen]);
+  }, [editor, isOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -183,7 +148,6 @@ export default function PublishPreviewDialog({
       );
       router.push(`/post/${postId}`);
       console.log(res.data.data, "published");
-
     } catch (error) {
       console.error("Failed to publish post:", error);
     }
@@ -258,8 +222,8 @@ export default function PublishPreviewDialog({
               </div>
               <p className="mt-4 text-sm text-gray-500">
                 Note: Changes here will affect how your story appears in public
-                places like Medium's homepage and in subscribers' inboxes — not
-                the contents of the story itself.
+                places like Medium&apos;s homepage and in subscribers&apos;
+                inboxes — not the contents of the story itself.
               </p>
             </div>
           </div>
@@ -288,10 +252,6 @@ export default function PublishPreviewDialog({
                 ))}
               </div>
               <div className="flex gap-2 w-ful sm:w-max-sm md:max-w-md lg:max-w-lg relative">
-                {/* <TopicsPopover
-                previewData={previewData}
-                setPreviewData={setPreviewData}
-              /> */}
                 <SearchComponent
                   previewData={previewData}
                   setPreviewData={setPreviewData}
@@ -310,32 +270,49 @@ export default function PublishPreviewDialog({
               </div>
               <ScrollArea className="h-max pr-4">
                 <div className="space-y-4">
-                  {loading ? <Loader2 className="animate-spin"/> : suggestedCategories.length ===0 ?<p className="text-muted-foreground">No categories suggested</p>:  suggestedCategories.map((category) => (
-                    <div
-                      key={category.id}
-                      className="flex items-center space-x-3"
-                    >
-                      <Checkbox
-                        id={category.id}
-                        className="h-5 w-5"
-                        onCheckedChange={(checked) => {setPreviewData((prev) => {
-                          if (checked) {
-                            return { ...prev, categories: [...prev.categories, category] };
-                          } else {
-                            return { ...prev, categories: prev.categories.filter((c) => c.id !== category.id) };
-                          }
-                        })}}
-                        
-                        defaultChecked
-                      />
-                      <Label
-                        htmlFor={category.id}
-                        className="text-base font-medium"
+                  {loading ? (
+                    <Loader2 className="animate-spin" />
+                  ) : suggestedCategories.length === 0 ? (
+                    <p className="text-muted-foreground">
+                      No categories suggested
+                    </p>
+                  ) : (
+                    suggestedCategories.map((category) => (
+                      <div
+                        key={category.id}
+                        className="flex items-center space-x-3"
                       >
-                        {category.name}
-                      </Label>
-                    </div>
-                  ))}
+                        <Checkbox
+                          id={category.id}
+                          className="h-5 w-5"
+                          onCheckedChange={(checked) => {
+                            setPreviewData((prev) => {
+                              if (checked) {
+                                return {
+                                  ...prev,
+                                  categories: [...prev.categories, category],
+                                };
+                              } else {
+                                return {
+                                  ...prev,
+                                  categories: prev.categories.filter(
+                                    (c) => c.id !== category.id
+                                  ),
+                                };
+                              }
+                            });
+                          }}
+                          defaultChecked
+                        />
+                        <Label
+                          htmlFor={category.id}
+                          className="text-base font-medium"
+                        >
+                          {category.name}
+                        </Label>
+                      </div>
+                    ))
+                  )}
                 </div>
               </ScrollArea>
             </div>
@@ -361,7 +338,7 @@ interface ImagesListDialogProps {
   setPreviewData: (data: SetStateAction<PreviewData>) => void;
 }
 function ImagesListDialog({
-  previewData,
+  // previewData,
   setPreviewData,
 }: ImagesListDialogProps) {
   const { editor } = useEditorContext();
@@ -393,6 +370,7 @@ function ImagesListDialog({
             <div className="grid grid-cols-3 gap-3 flex-grow h-full">
               {images.map((image) => (
                 <DialogClose
+                  key={image?.src}
                   className="border"
                   onClick={() => {
                     if (image) {
@@ -432,8 +410,10 @@ const SearchComponent = ({
   const [topicInput, setTopicInput] = useState("");
   const [suggestions, setSuggestions] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  //
   const debounce = (func: (...args: any[]) => void, delay: number) => {
     let timeoutId: NodeJS.Timeout;
+    //
     return (...args: any[]) => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => func(...args), delay);

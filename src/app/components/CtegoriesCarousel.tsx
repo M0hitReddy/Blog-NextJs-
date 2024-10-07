@@ -1,7 +1,7 @@
 // "use client";
 // import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
+// import { useSearchParams } from "next/navigation";
+// import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
@@ -13,8 +13,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Link from "next/link";
+// import Link from "next/link";
 import CategoryLink from "./CategoryLink";
+import { Category } from "@/types/schemas";
 
 export default async function CategoryCarousel({
   className,

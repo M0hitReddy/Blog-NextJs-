@@ -1,3 +1,4 @@
+import { Category } from "@/types/schemas";
 import natural from "natural";
 export function analyzeContent(text: string, categories: string[]): string[] {
   if (!text || typeof text !== "string") {
@@ -56,7 +57,7 @@ export function suggestCategories(
   tfidf.addDocument(postStems);
 
   // Prepare category documents
-  availableCategories.forEach((category, index) => {
+  availableCategories.forEach((category) => {
     const categoryTokens = tokenizer.tokenize(`${category.name}`.toLowerCase());
     const categoryStems = categoryTokens.map((token) => stemmer.stem(token));
     tfidf.addDocument(categoryStems);

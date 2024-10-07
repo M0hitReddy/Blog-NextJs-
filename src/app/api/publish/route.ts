@@ -1,4 +1,5 @@
 import prisma from "@/lib/dbConnect";
+import { Post } from "@/types/schemas";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req: NextRequest) {
@@ -11,10 +12,10 @@ export async function PUT(req: NextRequest) {
     const topicsTobeInserted = body.topics?.filter((topic) => topic.id === "");
     if (topicsTobeInserted && topicsTobeInserted.length > 0) {
       
-      const createdTopics = await prisma.topic.createMany({
-        data: topicsTobeInserted.map((topic) => ({ name: topic.name })),
-        skipDuplicates: true,
-      });
+      // const createdTopics = await prisma.topic.createMany({
+      //   data: topicsTobeInserted.map((topic) => ({ name: topic.name })),
+      //   skipDuplicates: true,
+      // });
       // Fetch the created topics to get their IDs
       const insertedTopics = await prisma.topic.findMany({
         where: {

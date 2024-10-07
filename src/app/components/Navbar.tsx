@@ -4,7 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; // Added AvatarImage import
 import { Button } from "@/components/ui/button";
-import { Edit, LogOut, Menu, Package2, Search, User } from "lucide-react";
+import { Edit, LogOut, Menu, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +15,9 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getServerSession } from "next-auth";
+// import { getServerSession } from "next-auth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { NavbarClientWrapper } from "./nav-client-wrapper";
+// import { NavbarClientWrapper } from "./nav-client-wrapper";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -25,8 +25,8 @@ import { useEditorContext } from "@/contexts/editor";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import PublishPreviewDialog from "../edit/[postId]/PublishPreviewDialog";
-import { useTheme } from "next-themes";
-import Image from "next/image";
+// import { useTheme } from "next-themes";
+// import Image from "next/image";
 
 export default function Navbar() {
   // const session = await getServerSession();
@@ -34,7 +34,7 @@ export default function Navbar() {
   console.log(session, "session");
   // useTheme().setTheme("system");
   const [isLoading, setIsLoading] = useState(true);
-  const { editor, title, setTitle } = useEditorContext();
+  const { editor, title } = useEditorContext();
   const [previewOpen, setPreviewOpen] = useState<boolean>(false);
   const router = useRouter();
   const { toast } = useToast();

@@ -1,4 +1,4 @@
-interface Post {
+export interface Post {
   id: string;
   title: string;
   subtitle?: string;
@@ -18,7 +18,7 @@ interface Post {
 }
 
 // Assuming you have the following interfaces defined for related models
-interface User {
+export interface User {
   id: string;
   email: string;
   image?: string;
@@ -26,15 +26,15 @@ interface User {
   // Add other fields as necessary
 }
 
-interface Topic extends Category {}
+export interface Topic extends Category {}
 
-interface Category {
+export interface Category {
   id: string;
   name: string;
   // Add other fields as necessary
 }
 
-interface Comment {
+export interface Comment {
   id: string;
   content: string;
   postId: string;
@@ -44,7 +44,7 @@ interface Comment {
   // Add other fields as necessary
 }
 
-interface Bookmark {
+export interface Bookmark {
   id: string;
   postId: string;
   userId: string;
@@ -52,7 +52,7 @@ interface Bookmark {
   // Add other fields as necessary
 }
 
-interface Like {
+export interface Like {
   id: string;
   postId: string;
   userId: string;
@@ -60,8 +60,9 @@ interface Like {
   // Add other fields as necessary
 }
 
-interface CategoryToPost {
-  postId: string;
-  categoryId: string;
-  // Add other fields as necessary
-}
+// interface CategoryToPost {
+//   postId: string;
+//   categoryId: string;
+//   // Add other fields as necessary
+// }
+

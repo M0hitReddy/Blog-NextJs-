@@ -1,9 +1,9 @@
 // import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/dbConnect";
-import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
+// import { getServerSession } from "next-auth";
+// import { useSession } from "next-auth/react";
 import { NextRequest, NextResponse } from "next/server";
-import { options } from "../auth/[...nextauth]/options";
+// import { options } from "../auth/[...nextauth]/options";
 
 export async function GET(req: NextRequest) {
   const searchParams = new URL(req.url).searchParams;
