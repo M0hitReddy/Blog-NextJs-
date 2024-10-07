@@ -11,7 +11,8 @@
     "type-check": "tsc --noEmit"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.js"
+    "generate": "prisma generate"
+
   },
   "dependencies": {
     "@cloudinary/react": "^1.13.0",
