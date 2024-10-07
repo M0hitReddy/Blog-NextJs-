@@ -4,7 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; // Added AvatarImage import
 import { Button } from "@/components/ui/button";
-import { Edit, LogOut, Menu, User } from "lucide-react";
+import { Edit, LogOut, Menu, Moon, Sun, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +25,7 @@ import { useEditorContext } from "@/contexts/editor";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import PublishPreviewDialog from "../edit/[postId]/PublishPreviewDialog";
+import { useTheme } from "next-themes";
 // import { useTheme } from "next-themes";
 // import Image from "next/image";
 
@@ -32,6 +33,7 @@ export default function Navbar() {
   // const session = await getServerSession();
   const { data: session, status } = useSession();
   console.log(session, "session");
+  const theme = useTheme()
   // useTheme().setTheme("system");
   const [isLoading, setIsLoading] = useState(true);
   const { editor, title } = useEditorContext();
@@ -205,6 +207,26 @@ export default function Navbar() {
                           <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                         </DropdownMenuItem>
                       </DropdownMenuGroup>
+                      <DropdownMenuItem className="p-0">
+                        <Button
+                          variant="ghost"
+                          className="p-2 h-max flex justify-between w-full"
+                          onClick={() => theme.setTheme(theme.theme === "light" ? "dark" : "light")}
+                        >
+                          {theme.theme === "light" ? (
+                            <>
+                              <Moon className="mr-2 h-4 w-4" />
+                              Dark Mode
+                            </>
+                          ) : (
+                            <>
+                              <Sun className="mr-2 h-4 w-4" />
+                              Light Mode
+                            </>
+                          )}
+                          <DropdownMenuShortcut>⇧⌘T</DropdownMenuShortcut>
+                        </Button>
+                      </DropdownMenuItem>
 
                       <DropdownMenuSeparator />
                       <DropdownMenuItem className="p-0">

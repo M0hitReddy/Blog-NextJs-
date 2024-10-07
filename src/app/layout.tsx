@@ -42,7 +42,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground flex flex-col h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} flex flex-col h-screen`}
       >
         <ThemeProvider
           attribute="class"

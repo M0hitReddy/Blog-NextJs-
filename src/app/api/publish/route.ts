@@ -11,11 +11,10 @@ export async function PUT(req: NextRequest) {
   try {
     const topicsTobeInserted = body.topics?.filter((topic) => topic.id === "");
     if (topicsTobeInserted && topicsTobeInserted.length > 0) {
-      
-      // const createdTopics = await prisma.topic.createMany({
-      //   data: topicsTobeInserted.map((topic) => ({ name: topic.name })),
-      //   skipDuplicates: true,
-      // });
+      await prisma.topic.createMany({
+        data: topicsTobeInserted.map((topic) => ({ name: topic.name })),
+        skipDuplicates: true,
+      });
       // Fetch the created topics to get their IDs
       const insertedTopics = await prisma.topic.findMany({
         where: {

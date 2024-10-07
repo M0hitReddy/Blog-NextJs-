@@ -98,9 +98,7 @@ export default function Edit() {
   return (
     <>
       {loading ? (
-        <div className="animate-spin">
-          <Loader2 />
-        </div>
+          <Loader2 className="animate-spin w-12 h-12 m-auto mt-20"/>
       ) : (
         <BlogEditor />
       )}
