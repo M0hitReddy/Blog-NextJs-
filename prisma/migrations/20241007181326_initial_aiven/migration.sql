@@ -5,4 +5,4 @@
 
 */
 -- AlterTable
--- ALTER TABLE `User` MODIFY `image` VARCHAR(191) NOT NULL;
+ALTER TABLE `User` MODIFY `image` VARCHAR(191) NOT NULL;

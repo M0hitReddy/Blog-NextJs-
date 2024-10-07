@@ -15,39 +15,38 @@ const topics = [
 ];
 
 const CATEGORIES = [
-  "Technology",
-  "Programming",
-  "Web Development",
-  // "Data Science",
-  "Exercise",
-  "Movies",
-  "Animation",
-  "Music",
-  "Pop Culture",
-  "Science Fiction",
-  "Art",
-  "Artificial Intelligence",
-  "Machine Learning",
-  "Cybersecurity",
-  "Cloud Computing",
-  "DevOps",
-  "Mobile Development",
-  "UI/UX Design",
-  "Business",
-  "Entrepreneurship",
-  "Marketing",
-  "Productivity",
-  "Personal Development",
-  "Health",
-  "Fitness",
-  "Travel",
-  "Food",
-  "Photography",
-  "Music",
-  "Art",
-  "Literature",
-  "Education",
-  "Flowers",
+  ...new Set([
+    "Technology",
+    "Programming",
+    "Web Development",
+    "Exercise",
+    "Movies",
+    "Animation",
+    "Music",
+    "Pop Culture",
+    "Science Fiction",
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Cybersecurity",
+    "Cloud Computing",
+    "DevOps",
+    "Mobile Development",
+    "UI/UX Design",
+    "Business",
+    "Entrepreneurship",
+    "Marketing",
+    "Productivity",
+    "Personal Development",
+    "Health",
+    "Fitness",
+    "Travel",
+    "Food",
+    "Photography",
+    "Art",
+    "Literature",
+    "Education",
+    "Flowers",
+  ])
 ];
 
 async function main() {
@@ -146,12 +145,17 @@ async function seedTopics() {
 }
 
 async function seedCategories() {
-  CATEGORIES.forEach(async (category) => {
-    await prisma.category.create({
-      data: {name:category},
+  for (const category of CATEGORIES) {
+    const existingCategory = await prisma.category.findUnique({
+      where: { name: category },
     });
-  });
-  
+
+    if (!existingCategory) {
+      await prisma.category.create({
+        data: { name: category },
+      });
+    }
+  }
 }
 
 // main()
@@ -165,17 +169,7 @@ async function seedCategories() {
 //   });
 
 
-// seedTopics()
-//   .then(async () => {
-//     await prisma.$disconnect();
-//   })
-//   .catch(async (e) => {
-//     console.error(e);
-//     await prisma.$disconnect();
-//     process.exit(1);
-//   });
-
-seedCategories()
+seedTopics()
   .then(async () => {
     await prisma.$disconnect();
   })
@@ -184,3 +178,13 @@ seedCategories()
     await prisma.$disconnect();
     process.exit(1);
   });
+
+// seedCategories()
+//   .then(async () => {
+//     await prisma.$disconnect();
+//   })
+//   .catch(async (e) => {
+//     console.error(e);
+//     await prisma.$disconnect();
+//     process.exit(1);
+//   });
