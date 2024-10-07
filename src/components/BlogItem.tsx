@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
+import { Post } from "@/types/schemas";
 
 export default function BlogItem({ post }: { post: Post }) {
   return (

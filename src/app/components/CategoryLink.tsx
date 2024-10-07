@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Category } from "@/types/schemas";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 

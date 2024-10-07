@@ -15,7 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Post } from "@/types/schemas";
 
 // export const revalidate = 3600;
-export const forceDynamic = true;
+// export const forceDynamic = true;
 
 function readTime(content: string): string {
   const wordsPerMinute = 200;
