@@ -39,7 +39,7 @@ export const options: NextAuthOptions = {
           const newUser = await prisma.user.create({
             data: {
               email: profile?.email ?? "",
-              // image: profile?.image,
+              image: profile?.image,
               name: profile?.name ?? "",
               password: "", // Consider a more secure approach for handling passwords
             },
