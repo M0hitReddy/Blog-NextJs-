@@ -12,7 +12,6 @@
   },
   "prisma": {
     "generate": "prisma generate"
-
   },
   "dependencies": {
     "@cloudinary/react": "^1.13.0",
